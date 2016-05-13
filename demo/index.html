@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html ng-app="nadobit.wysiwym.demo">
+    <head>
+        <title>Wysiwym Editor</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">
+
+        <link rel="stylesheet/less" type="text/less" href="main.less">
+        <link rel="stylesheet/less" type="text/less" href="../style/angular-nadobit-wysiqym.less">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.6.1/less.min.js"></script>
+    </head>
+    <body ng-controller="NadobitWysiwymDemoController">
+
+        <div class="container">
+            <div class="page-header">
+                <h1>WYSIWYM Editor</h1>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <nb-wysiwym-editor nb-schema="schema" ng-model="data"></nb-wysiwym-editor>
+                </div>
+                <div class="col-md-6">
+                    <pre>{{data}}</pre>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.2/ui-bootstrap-tpls.min.js"></script>
+        <script src="../dist/angular-nadobit-wysiwym.js"></script>
+        <script src="nadobit-wysiwym-demo.js"></script>
+    </body>
+</html>

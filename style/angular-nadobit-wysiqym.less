@@ -1,0 +1,114 @@
+@border-color: #ccc;
+
+nb-wysiwym-editor {
+
+    display: block;
+
+    a {
+        cursor: pointer;
+    }
+}
+
+nb-wysiwym-editor-node {
+    display: block;
+
+    > .node-header {
+        position: relative;
+
+        > .node-label {
+            display: inline-block;
+            border: 1px solid @border-color;
+            padding: 2px 8px;
+            font-weight: bold;
+            background-color: #eee;
+            margin-right: 5px;
+
+            > .drag {
+                color: #ccc;
+                cursor: move;
+                margin-right: 2px;
+                font-weight: normal;
+            }
+        }
+
+        + nb-childs-marker + nb-wysiwym-editor-node-list,
+        + .node-attributes {
+            padding-top: 10px;
+        }
+    }
+
+    > .node-attributes {
+        border-left: 1px solid @border-color;
+        padding: 10px;
+        padding-top: 0;
+
+        > .input-group {
+
+            > .input-group-addon:first-child {
+                min-width: 100px;
+                text-align: left;
+            }
+
+            &:not(:last-child) {
+                > .input-group-addon {
+                    border-bottom-left-radius: 0;
+                    border-bottom: 0;
+                }
+
+                > .form-control {
+                    border-bottom-right-radius: 0;
+                    border-bottom: 0;
+                }
+            }
+
+            &:not(:first-child) {
+                > .input-group-addon {
+                    border-top-left-radius: 0;
+                }
+
+                > .form-control {
+                    border-top-right-radius: 0;
+                }
+            }
+        }
+    }
+
+    > .node-footer {
+        display: inline-block;
+        border: 1px solid @border-color;
+        padding: 2px 8px;
+        font-size: 12px;
+    }
+
+    > nb-wysiwym-editor-node-list {
+        display: block;
+        border-left: 1px solid @border-color;
+        padding: 10px;
+        padding-top: 0;
+
+        > nb-wysiwym-editor-node {
+
+            &:not(:last-child) {
+                margin-bottom: 10px;
+            }
+
+            > .node-header > .line {
+                width: 10px;
+                border-top: 1px solid @border-color;
+                position: absolute;
+                left: -11px;
+                top: 50%;
+
+                > .dot {
+                    position: absolute;
+                    background-color: @border-color;
+                    width: 7px;
+                    height: 7px;
+                    left: -4px;
+                    top: -4px;
+                    border-radius: 3px;
+                }
+            }
+        }
+    }
+}
