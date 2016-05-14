@@ -1,0 +1,26 @@
+<span class="btn-group" uib-dropdown>
+    <button class="btn btn-default" uib-dropdown-toggle>
+        Add Attribute
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" uib-dropdown-menu>
+        <li ng-repeat="attribute in schemaAttributes | filter:{used:false}">
+            <a ng-click="onAddAttributeClick(attribute)">{{attribute.key}}</a>
+        </li>
+    </ul>
+</span>
+<div class="attributes">
+    <div class="attribute" ng-repeat="attribute in value">
+        <div class="key">
+            <span uib-dropdown>
+                <a uib-dropdown-toggle>{{attribute.key}}</a>
+                <ul class="dropdown-menu" uib-dropdown-menu>
+                    <li>
+                        <a ng-click="onDeleteAttributeClick(attribute)">Delete</a>
+                    </li>
+                </ul>
+            </span>
+        </div>
+        <div class="widget" nb-compile="schemaAttributesByKey[attribute.key].widget"></div>
+    </div>
+</div>

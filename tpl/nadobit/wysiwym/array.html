@@ -1,0 +1,27 @@
+<button class="btn btn-default" ng-click="onAddElementClick()">Add Element</button>
+<div class="elements">
+    <div class="element" ng-repeat="element in value">
+        <div class="controls">
+            <span uib-dropdown>
+                <a uib-dropdown-toggle><i class="fa fa-bars"></i></a>
+                <ul class="dropdown-menu" uib-dropdown-menu>
+                    <li ng-if="pasteSource">
+                        <a ng-click="onPasteElementClick(element, 0)">Paste Before</a>
+                    </li>
+                    <li ng-if="pasteSource">
+                        <a ng-click="onPasteElementClick(element, 1)">Paste After</a>
+                    </li>
+                    <li class="divider" ng-if="pasteSource"></li>
+                    <li>
+                        <a ng-click="onCutElementClick(element)">Cut</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a ng-click="onDeleteElementClick(element)">Delete</a>
+                    </li>
+                </ul>
+            </span>
+        </div>
+        <div class="widget" nb-compile="schema.widget"></div>
+    </div>
+</div>

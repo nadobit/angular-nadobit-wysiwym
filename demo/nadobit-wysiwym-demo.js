@@ -4,56 +4,29 @@ angular.module('nadobit.wysiwym.demo', [
 
 .controller('NadobitWysiwymDemoController', function($scope) {
 
-    //
-    // axiom: description, rule
-    // description: cdata
-    // rule: conclusion, premises*
-    // conclusion: combined | symbol | variable
-    // premise: combined | symbol | variable
-    // combined: (combined | symbol | variable), (combined | symbol | variable)
-    // symbol: empty
-    // variable: empty
-    //
-
+    $scope.data = ['a', 'b', 'c'];
     $scope.schema = {
-        rootType: 'axiom',
-        types: {
-            axiom: {
-                attributes: ['version', 'author'],
-                childs: ['desciption', 'rule'],
-            },
-            description: {
-                cdata: true,
-            },
-            rule: {
-                childs: ['conclusion', 'premise'],
-            },
-            conclusion: {
-                childs: ['combined', 'symbol', 'variable'],
-            },
-            premise: {
-                childs: ['combined', 'symbol', 'variable'],
-            },
-            combined: {
-                childs: ['combined', 'symbol', 'variable'],
-            },
-            symbol: {
-                attributes: ['language', 'key'],
-            },
-            variable: {
-                attributes: ['key'],
-            },
-        }
+        widget: '<input ng-model="element.value" ng-change="onChildChanged()"></input>',
     };
 
-    $scope.data = {
-        type: 'axiom',
-        childs: [{
-            type: 'description',
-        }, {
-            type: 'rule',
-        }]
-    };
+    // $scope.data = {
+    //     value1: 'xx',
+    //     value2: {},
+    // };
+
+    // $scope.schema = {
+    //     attributes: [{
+    //         key: 'value1',
+    //         widget: '<input ng-model="attribute.value" ng-change="onChildChanged()"></input>',
+    //     }, {
+    //         key: 'value2',
+    //         widget: '<nb-wysiwym-object nb-schema="schema" ng-model="attribute.value" ng-change="onChildChanged()"></nb-wysiwym-object>',
+    //     }, {
+    //         key: 'value3',
+    //     }, {
+    //         key: 'value4',
+    //     }]
+    // };
 
 })
 
