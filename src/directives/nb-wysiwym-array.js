@@ -1,15 +1,12 @@
 module.exports = function() {
     return {
         restrict: 'E',
-        templateUrl: '/tpl/nadobit/wysiwym/array.html',
         require: 'ngModel',
-        scope: {
-            schema: '<nbSchema',
-            config: '<nbConfig',
-        },
+        template: '<div class="elements" ng-repeat="element in value"><div class="element" nb-inject-slot="element">{{element}}</div></div>',
+        scope: {},
         link: function(scope, element, attrs, model) {
 
-            scope.onDeleteElementClick = function(element) {
+            scope.deleteElement = function(element) {
                 var index = scope.value.indexOf(element);
                 scope.value.splice(index, 1);
                 model.$setViewValue(angular.copy(scope.value));
@@ -19,14 +16,14 @@ module.exports = function() {
                 model.$setViewValue(angular.copy(scope.value));
             };
 
-            scope.onAddElementClick = function() {
+            scope.addElement = function() {
                 scope.value.push({
                     value: null,
                 });
                 model.$setViewValue(angular.copy(scope.value));
             };
 
-            scope.onCutElementClick = function(element) {
+            scope.cutElement = function(element) {
                 scope.pasteSource = function() {
                     var index = scope.value.indexOf(element);
                     scope.value.splice(index, 1);
@@ -35,7 +32,7 @@ module.exports = function() {
                 };
             };
 
-            scope.onPasteElementClick = function(element, offset) {
+            scope.pasteElement = function(element, offset) {
                 var index = scope.value.indexOf(element);
                 var pasteElement = scope.pasteSource();
                 if (element === pasteElement) {

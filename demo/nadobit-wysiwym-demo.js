@@ -4,7 +4,7 @@ angular.module('nadobit.wysiwym.demo', [
 
 .controller('NadobitWysiwymDemoController', function($scope) {
 
-    $scope.data = [];
+    $scope.data = ['a', 'b', 'c', 'd', 'e'];
     $scope.config = {
         schema: {
             widget: '<nb-wysiwym-object nb-schema="config.objSchema" nb-config="config" ng-model="element.value" ng-change="onChildChanged()"></nb-wysiwym-object>',
