@@ -18,10 +18,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <nb-wysiwym-array ng-model="data" nb-injectable>
-                        <div nb-inject="header">TEST <b>{{}}</b></div>
-                        <div nb-inject="element">CustomContent <b>{{element}}</b></div>
-                    </nb-wysiwym-array>
+                    <nb-wysiwym-widget nb-config="config.widget" ng-model="data"></nb-wysiwym-widget>
                 </div>
                 <div class="col-md-6">
                     <pre>{{data}}</pre>

@@ -1,10 +1,19 @@
-module.exports = function() {
+module.exports = function($compile) {
     return {
         restrict: 'E',
         require: 'ngModel',
-        template: '<div class="elements" ng-repeat="element in value"><div class="element" nb-inject-slot="element">{{element}}</div></div>',
-        scope: {},
+        templateUrl: function(element, attrs) {
+            if ('nbTemplateUrl' in attrs) {
+                return attrs.nbTemplateUrl;
+            }
+            return '/tpl/nadobit/wysiwym/array.html';
+        },
+        scope: {
+            config: '<nbConfig',
+        },
         link: function(scope, element, attrs, model) {
+
+            scope.expanded = true;
 
             scope.deleteElement = function(element) {
                 var index = scope.value.indexOf(element);
@@ -17,8 +26,12 @@ module.exports = function() {
             };
 
             scope.addElement = function() {
+                var newElement = null;
+                if (angular.isFunction(scope.config.createElement)) {
+                    newElement = scope.config.createElement();
+                }
                 scope.value.push({
-                    value: null,
+                    value: newElement,
                 });
                 model.$setViewValue(angular.copy(scope.value));
             };
@@ -41,6 +54,11 @@ module.exports = function() {
                     index = scope.value.indexOf(element);
                     scope.value.splice(index + offset, 0, pasteElement);
                 }
+                model.$setViewValue(angular.copy(scope.value));
+            };
+
+            scope.toggleExpanded = function() {
+                scope.expanded = !scope.expanded;
             };
 
             model.$formatters.push(function(value) {

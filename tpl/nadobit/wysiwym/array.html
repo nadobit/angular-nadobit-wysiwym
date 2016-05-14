@@ -1,27 +1,32 @@
-<button class="btn btn-default" ng-click="onAddElementClick()">Add Element</button>
-<div class="elements">
-    <div class="element" ng-repeat="element in value">
-        <div class="controls">
+<div class="nb-header">
+    <a ng-click="toggleExpanded()">
+        <i class="fa fa-{{expanded ? 'minus' : 'plus'}}-square-o"></i>
+    </a>
+    <a ng-click="addElement()">Add Element</a>
+</div>
+<div class="nb-elements" ng-if="expanded">
+    <div class="nb-element" ng-repeat="element in value">
+        <div class="nb-header">
             <span uib-dropdown>
                 <a uib-dropdown-toggle><i class="fa fa-bars"></i></a>
                 <ul class="dropdown-menu" uib-dropdown-menu>
                     <li ng-if="pasteSource">
-                        <a ng-click="onPasteElementClick(element, 0)">Paste Before</a>
+                        <a ng-click="pasteElement(element, 0)">Paste Before</a>
                     </li>
                     <li ng-if="pasteSource">
-                        <a ng-click="onPasteElementClick(element, 1)">Paste After</a>
+                        <a ng-click="pasteElement(element, 1)">Paste After</a>
                     </li>
                     <li class="divider" ng-if="pasteSource"></li>
                     <li>
-                        <a ng-click="onCutElementClick(element)">Cut</a>
+                        <a ng-click="cutElement(element)">Cut</a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a ng-click="onDeleteElementClick(element)">Delete</a>
+                        <a ng-click="deleteElement(element)">Delete</a>
                     </li>
                 </ul>
             </span>
         </div>
-        <div class="widget" nb-compile="schema.widget"></div>
+        <nb-wysiwym-widget class="nb-content" nb-config="config.widget" ng-model="element.value" ng-change="onChildChanged()"></nb-wysiwym-widget>
     </div>
 </div>
