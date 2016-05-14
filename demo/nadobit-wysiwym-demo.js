@@ -4,9 +4,23 @@ angular.module('nadobit.wysiwym.demo', [
 
 .controller('NadobitWysiwymDemoController', function($scope) {
 
-    $scope.data = ['a', 'b', 'c'];
-    $scope.schema = {
-        widget: '<input ng-model="element.value" ng-change="onChildChanged()"></input>',
+    $scope.data = [];
+    $scope.config = {
+        schema: {
+            widget: '<nb-wysiwym-object nb-schema="config.objSchema" nb-config="config" ng-model="element.value" ng-change="onChildChanged()"></nb-wysiwym-object>',
+        },
+        objSchema: {
+            attributes: [{
+                key: 'string',
+                widget: '<input ng-model="attribute.value" ng-change="onChildChanged()"></input>',
+            }, {
+                key: 'object',
+                widget: '<nb-wysiwym-object nb-schema="config.objSchema" nb-config="config" ng-model="attribute.value" ng-change="onChildChanged()"></nb-wysiwym-object>',
+            }, {
+                key: 'array',
+                widget: '<nb-wysiwym-array nb-schema="config.schema" nb-config="config" ng-model="attribute.value" ng-change="onChildChanged()"></nb-wysiwym-array>',
+            }]
+        }
     };
 
     // $scope.data = {

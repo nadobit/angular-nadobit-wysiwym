@@ -4,7 +4,8 @@ module.exports = function() {
         templateUrl: '/tpl/nadobit/wysiwym/array.html',
         require: 'ngModel',
         scope: {
-            schema: '=nbSchema',
+            schema: '<nbSchema',
+            config: '<nbConfig',
         },
         link: function(scope, element, attrs, model) {
 
