@@ -10,9 +10,9 @@ module.exports = function() {
 
             scope.expanded = true;
 
-            scope.attributesByKey = {};
+            scope.attributeDefs = {};
             scope.config.attributes.forEach(function(attribute) {
-                scope.attributesByKey[attribute.key] = attribute;
+                scope.attributeDefs[attribute.key] = Object.create(attribute);
             });
 
             scope.toggleExpanded = function() {
@@ -32,25 +32,29 @@ module.exports = function() {
                     key: attribute.key,
                     value: newElement,
                 });
+                scope.attributeDefs[attribute.key].used = true;
                 scope.value.sort(keyComparator);
                 model.$setViewValue(angular.copy(scope.value));
             };
 
             scope.replaceElement = function(element, type) {
                 scope.deleteElement(element);
-                scope.addElement(scope.attributesByKey[element.key], type);
+                scope.addElement(scope.attributeDefs[element.key], type);
             };
 
             scope.deleteElement = function(element) {
                 var index = scope.value.indexOf(element);
                 scope.value.splice(index, 1);
                 model.$setViewValue(angular.copy(scope.value));
+                delete scope.attributeDefs[element.key].used;
             };
 
             model.$formatters.push(function(value) {
                 var attributes = [];
+                resetAttributeUsedFlags();
                 if (angular.isObject(value)) {
                     angular.forEach(value, function(value, key) {
+                        scope.attributeDefs[key].used = true;
                         attributes.push({
                             key: key,
                             value: value,
@@ -79,6 +83,12 @@ module.exports = function() {
                 if (a.key < b.key) return -1;
                 if (a.key > b.key) return 1;
                 return 0;
+            };
+
+            function resetAttributeUsedFlags() {
+                angular.forEach(scope.attributeDefs, function(attributeDef) {
+                    delete attributeDef.used;
+                });
             };
         }
     };

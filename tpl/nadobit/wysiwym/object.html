@@ -6,8 +6,8 @@
     <span uib-dropdown class="pull-right">
         <a uib-dropdown-toggle>Add Element</a>
         <ul class="dropdown-menu" uib-dropdown-menu>
-            <li class="dropdown-header" ng-repeat-start="attribute in config.attributes">{{attribute.key}}</li>
-            <li ng-repeat-end ng-repeat="type in attribute.types">
+            <li class="dropdown-header" ng-repeat-start="attribute in config.attributes" ng-if="!attributeDefs[attribute.key].used">{{attribute.key}}</li>
+            <li ng-repeat-end ng-repeat="type in attribute.types" ng-if="!attributeDefs[attribute.key].used">
                 <a ng-click="addElement(attribute, type)">{{type}}</a>
             </li>
         </ul>
@@ -19,7 +19,7 @@
             <span uib-dropdown>
                 <a uib-dropdown-toggle>{{element.key}}</a>
                 <ul class="dropdown-menu" uib-dropdown-menu>
-                    <li ng-repeat-end ng-repeat="type in attributesByKey[element.key].types">
+                    <li ng-repeat-end ng-repeat="type in attributeDefs[element.key].types">
                         <a ng-click="replaceElement(element, type)">{{type}}</a>
                     </li>
                     <li class="divider"></li>
