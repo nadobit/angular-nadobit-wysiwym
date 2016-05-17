@@ -8,7 +8,7 @@ module.exports = /*@ngInject*/ function($compile) {
         link: function(scope, element, attrs, model) {
 
             scope.$watch('value.value', function(value) {
-                model.$setViewValue(value);
+                model.$setViewValue(scope.value);
             });
 
             if (angular.isString(scope.config.template)) {
