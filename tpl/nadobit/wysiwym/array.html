@@ -4,7 +4,9 @@
     </a>
     <span class="text-muted">{{config.typeLabel}}</span>
     <span uib-dropdown class="pull-right">
-        <a uib-dropdown-toggle>Add Element</a>
+        <a uib-dropdown-toggle>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+        </a>
         <ul class="dropdown-menu" uib-dropdown-menu>
             <li ng-repeat="type in config.types">
                 <a ng-click="addElement(type)">{{type}}</a>

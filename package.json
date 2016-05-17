@@ -15,5 +15,8 @@
     "gulp-ng-annotate": "^2.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-webserver": "^0.9.1"
+  },
+  "dependencies": {
+    "lodash": "^4.12.0"
   }
 }

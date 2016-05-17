@@ -1,3 +1,5 @@
+var _ = require('lodash');
+
 module.exports = function() {
     return {
         restrict: 'E',
@@ -10,10 +12,8 @@ module.exports = function() {
 
             scope.expanded = true;
 
-            scope.attributeDefs = {};
-            scope.config.attributes.forEach(function(attribute) {
-                scope.attributeDefs[attribute.key] = Object.create(attribute);
-            });
+            scope.availableAttributes = null;
+            scope.attributesByKey = _.keyBy(scope.config.attributes, 'key');
 
             scope.toggleExpanded = function() {
                 scope.expanded = !scope.expanded;
@@ -32,37 +32,47 @@ module.exports = function() {
                     key: attribute.key,
                     value: newElement,
                 });
-                scope.attributeDefs[attribute.key].used = true;
-                scope.value.sort(keyComparator);
-                model.$setViewValue(angular.copy(scope.value));
+                _.sortBy(scope.value, 'key');
+                _.pull(scope.availableAttributes, attribute);
+                model.$setViewValue(_.clone(scope.value));
             };
 
             scope.replaceElement = function(element, type) {
-                scope.deleteElement(element);
-                scope.addElement(scope.attributeDefs[element.key], type);
+                _.pull(scope.value, element);
+                scope.addElement(scope.attributesByKey[element.key], type);
             };
 
             scope.deleteElement = function(element) {
-                var index = scope.value.indexOf(element);
-                scope.value.splice(index, 1);
-                model.$setViewValue(angular.copy(scope.value));
-                delete scope.attributeDefs[element.key].used;
+                _.pull(scope.value, element);
+                scope.availableAttributes.push(scope.attributesByKey[element.key]);
+                _.sortBy(scope.availableAttributes, 'key');
             };
 
             model.$formatters.push(function(value) {
-                var attributes = [];
-                resetAttributeUsedFlags();
+
+                scope.availableAttributes = _.chain(scope.config.attributes)
+                    .clone()
+                    .sortBy('key')
+                    .value();
+
+                // expexted type
                 if (angular.isObject(value)) {
-                    angular.forEach(value, function(value, key) {
-                        scope.attributeDefs[key].used = true;
-                        attributes.push({
-                            key: key,
-                            value: value,
-                        });
-                    });
-                    attributes.sort(keyComparator);
+                    return _.chain(value)
+                        .map(function(value, key) {
+                            _.pull(
+                                scope.availableAttributes,
+                                scope.attributesByKey[key]
+                            );
+                            return {
+                                key: key,
+                                value: value,
+                            };
+                        })
+                        .value();
                 }
-                return attributes;
+
+                // fallback
+                return [];
             });
 
             model.$parsers.push(function(value) {
@@ -77,18 +87,6 @@ module.exports = function() {
 
             model.$render = function() {
                 scope.value = model.$viewValue;
-            };
-
-            function keyComparator(a, b) {
-                if (a.key < b.key) return -1;
-                if (a.key > b.key) return 1;
-                return 0;
-            };
-
-            function resetAttributeUsedFlags() {
-                angular.forEach(scope.attributeDefs, function(attributeDef) {
-                    delete attributeDef.used;
-                });
             };
         }
     };
