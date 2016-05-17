@@ -2,11 +2,32 @@
     <a ng-click="toggleExpanded()">
         <i class="fa fa-{{expanded ? 'minus' : 'plus'}}-square-o"></i>
     </a>
+    <span class="text-muted">{{config.typeLabel}}</span>
+    <span uib-dropdown class="pull-right">
+        <a uib-dropdown-toggle>Add Element</a>
+        <ul class="dropdown-menu" uib-dropdown-menu>
+            <li class="dropdown-header" ng-repeat-start="attribute in config.attributes">{{attribute.key}}</li>
+            <li ng-repeat-end ng-repeat="type in attribute.types">
+                <a ng-click="addElement(attribute, type)">{{type}}</a>
+            </li>
+        </ul>
+    </span>
 </div>
-<div class="nb-elements" ng-if="expanded">
+<div class="nb-elements" ng-if="expanded &amp;&amp; value.length">
     <div class="nb-element" ng-repeat="element in value">
         <div class="nb-header">
-            <a>{{element.key}}</a>
+            <span uib-dropdown>
+                <a uib-dropdown-toggle>{{element.key}}</a>
+                <ul class="dropdown-menu" uib-dropdown-menu>
+                    <li ng-repeat-end ng-repeat="type in attributesByKey[element.key].types">
+                        <a ng-click="replaceElement(element, type)">{{type}}</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a ng-click="deleteElement(element)">Delete</a>
+                    </li>
+                </ul>
+            </span>
         </div>
         <nb-wysiwym-widget class="nb-content" nb-config="config.widget" ng-model="element.value" ng-change="onChildChanged()"></nb-wysiwym-widget>
     </div>

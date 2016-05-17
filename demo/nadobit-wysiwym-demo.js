@@ -4,28 +4,115 @@ angular.module('nadobit.wysiwym.demo', [
 
 .controller('NadobitWysiwymDemoController', function($scope) {
 
-    $scope.data = ['a', ['1', '2', '3'], {'pxxx': 'x', 'qa': ['u', 'v', 'w'], 'ryy': 'z'}, 'd', 'e'];
+    $scope.data = {
+        type: 'ElementList',
+        value: [{
+            type: 'Circle',
+            value: {
+                radius: {
+                    type: 'Number',
+                    value: '10',
+                },
+                position: {
+                    type: 'Position',
+                    value: {
+                        x: {
+                            type: 'Number',
+                            value: '20',
+                        }
+                    },
+                }
+            }
+        }]
+    };
+
+    var widgetTemplates = {
+        'array': '<nb-wysiwym-array nb-config="subConfig" ng-model="value.value"></nb-wysiwym-array>',
+        'object': '<nb-wysiwym-object nb-config="subConfig" ng-model="value.value"></nb-wysiwym-object>',
+        'text': '<input type="text" ng-model="value.value" ng-change="onChildChanged()" class="form-control">',
+        'null': '<div class="label label-default" style="margin: 8px; display: inline-block;">null</label>',
+    };
+
+    var types = {
+        'ElementList': {
+            widget: 'array',
+            types: [
+                'Circle',
+                'Rectangle',
+                'Line',
+            ],
+        },
+        'Circle': {
+            widget: 'object',
+            attributes: [{
+                key: 'position',
+                types: ['Position', 'Number'],
+            }, {
+                key: 'radius',
+                types: ['Number'],
+            }]
+        },
+        'Rectangle': {
+            widget: 'object',
+            attributes: [{
+                key: 'position',
+                types: ['Position'],
+            }, {
+                key: 'width',
+                types: ['Number'],
+            }, {
+                key: 'height',
+                types: ['Number'],
+            }]
+        },
+        'Line': {
+            widget: 'object',
+            attributes: [{
+                key: 'start',
+                types: ['Position'],
+            }, {
+                key: 'stop',
+                types: ['Position'],
+            }]
+        },
+        'Position': {
+            widget: 'object',
+            attributes: [{
+                key: 'x',
+                types: ['Number'],
+            }, {
+                key: 'y',
+                types: ['Number'],
+            }]
+        },
+        'Number': {
+            widget: 'text',
+        }
+    };
+
     $scope.config = {
         widget: {
             template: function(scope) {
-                if (angular.isString(scope.value)) {
-                    return '<input type="text" ng-model="value" ng-change="onChildChanged()" class="form-control">';
-                }
-                if (angular.isArray(scope.value)) {
-                    scope.subConfig = $scope.config;
-                    return '<nb-wysiwym-array nb-config="subConfig" ng-model="value"></nb-wysiwym-array>';
-                }
+                var widget = 'null';
                 if (angular.isObject(scope.value)) {
-                    scope.subConfig = $scope.config;
-                    return '<nb-wysiwym-object nb-config="subConfig" ng-model="value"></nb-wysiwym-object>';
+                    var typeDef = types[scope.value.type];
+                    widget = typeDef.widget;
+                    if (widget === 'object') {
+                        scope.subConfig = Object.create($scope.config);
+                        scope.subConfig.typeLabel = scope.value.type;
+                        scope.subConfig.attributes = typeDef.attributes;
+                    } else if (widget === 'array') {
+                        scope.subConfig = Object.create($scope.config);
+                        scope.subConfig.typeLabel = scope.value.type;
+                        scope.subConfig.types = typeDef.types;
+                    }
                 }
-                return '<div class="label label-default" style="margin: 8px; display: inline-block;">null</label>';
+                return widgetTemplates[widget];
             }
         },
-        createElement: function() {
-            return {firstName: 'Hans', lastName: 'Wurst'};
-        }
-
+        createElement: function(type) {
+            return {type: type};
+        },
         // schema: {
         //     widget: '<nb-wysiwym-object nb-schema="config.objSchema" nb-config="config" ng-model="element.value" ng-change="onChildChanged()"></nb-wysiwym-object>',
         // },

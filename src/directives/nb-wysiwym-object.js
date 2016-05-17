@@ -10,11 +10,40 @@ module.exports = function() {
 
             scope.expanded = true;
 
+            scope.attributesByKey = {};
+            scope.config.attributes.forEach(function(attribute) {
+                scope.attributesByKey[attribute.key] = attribute;
+            });
+
             scope.toggleExpanded = function() {
                 scope.expanded = !scope.expanded;
             };
 
             scope.onChildChanged = function() {
+                model.$setViewValue(angular.copy(scope.value));
+            };
+
+            scope.addElement = function(attribute, type) {
+                var newElement = null;
+                if (angular.isFunction(scope.config.createElement)) {
+                    newElement = scope.config.createElement(type);
+                }
+                scope.value.push({
+                    key: attribute.key,
+                    value: newElement,
+                });
+                scope.value.sort(keyComparator);
+                model.$setViewValue(angular.copy(scope.value));
+            };
+
+            scope.replaceElement = function(element, type) {
+                scope.deleteElement(element);
+                scope.addElement(scope.attributesByKey[element.key], type);
+            };
+
+            scope.deleteElement = function(element) {
+                var index = scope.value.indexOf(element);
+                scope.value.splice(index, 1);
                 model.$setViewValue(angular.copy(scope.value));
             };
 

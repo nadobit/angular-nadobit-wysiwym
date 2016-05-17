@@ -2,7 +2,15 @@
     <a ng-click="toggleExpanded()">
         <i class="fa fa-{{expanded ? 'minus' : 'plus'}}-square-o"></i>
     </a>
-    <a ng-click="addElement()">Add Element</a>
+    <span class="text-muted">{{config.typeLabel}}</span>
+    <span uib-dropdown class="pull-right">
+        <a uib-dropdown-toggle>Add Element</a>
+        <ul class="dropdown-menu" uib-dropdown-menu>
+            <li ng-repeat="type in config.types">
+                <a ng-click="addElement(type)">{{type}}</a>
+            </li>
+        </ul>
+    </span>
 </div>
 <div class="nb-elements" ng-if="expanded">
     <div class="nb-element" ng-repeat="element in value">

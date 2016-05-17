@@ -132,7 +132,12 @@ nb-wysiwym-object {
 
 nb-wysiwym-widget {
 
-    .nb-content > .form-control {
-        border: none;
+    &.nb-content {
+        display: inline-block;
+
+        > .form-control {
+            display: inline-block;
+            border: none;
+        }
     }
 }

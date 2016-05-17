@@ -25,10 +25,10 @@ module.exports = function($compile) {
                 model.$setViewValue(angular.copy(scope.value));
             };
 
-            scope.addElement = function() {
+            scope.addElement = function(type) {
                 var newElement = null;
                 if (angular.isFunction(scope.config.createElement)) {
-                    newElement = scope.config.createElement();
+                    newElement = scope.config.createElement(type);
                 }
                 scope.value.push({
                     value: newElement,
