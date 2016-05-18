@@ -6,4 +6,6 @@ angular.module('nadobit.wysiwym', [
 .directive('nbWysiwymObject', require('./directives/nb-wysiwym-object'))
 .directive('nbWysiwymWidget', require('./directives/nb-wysiwym-widget'))
 
+.provider('nbWysiwymRegistry', require('./providers/nb-wysiwym-registry'))
+
 ;
