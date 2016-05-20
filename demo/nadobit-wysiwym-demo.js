@@ -33,17 +33,9 @@ angular.module('nadobit.wysiwym.demo', [
     nbWysiwymRegistry.registerWidgets([{
         key: 'array',
         template: '<nb-wysiwym-array nb-config="subConfig" ng-model="value.value"></nb-wysiwym-array>',
-        extendConfig: function(config, typeKey, typeDef) {
-            config.typeLabel = typeKey;
-            config.types = typeDef.types;
-        },
     }, {
         key: 'object',
         template: '<nb-wysiwym-object nb-config="subConfig" ng-model="value.value"></nb-wysiwym-object>',
-        extendConfig: function(config, typeKey, typeDef) {
-            config.typeLabel = typeKey;
-            config.attributes = typeDef.attributes;
-        },
     }, {
         key: 'text',
         template: '<input type="text" ng-model="value.value" ng-change="onChildChanged()" class="form-control">',
@@ -55,88 +47,84 @@ angular.module('nadobit.wysiwym.demo', [
     nbWysiwymRegistry
         .registerType({
             key: 'EventList',
-            widget: 'array',
-            types: [
-                'Circle',
-                'Rectangle',
-                'Line',
-            ],
+            widget: {
+                key: 'array',
+                config: {
+                    types: [
+                        'Circle',
+                        'Rectangle',
+                        'Line',
+                    ],
+                }
+            }
         })
         .registerType({
             key: 'Circle',
-            widget: 'object',
-            attributes: [{
-                key: 'position',
-                types: ['Position', 'Number'],
-            }, {
-                key: 'radius',
-                types: ['Number'],
-            }]
+            widget: {
+                key: 'object',
+                config: {
+                    attributes: [{
+                        key: 'position',
+                        types: ['Position', 'Number'],
+                    }, {
+                        key: 'radius',
+                        types: ['Number'],
+                    }]
+                }
+            }
         })
         .registerType({
             key: 'Rectangle',
-            widget: 'object',
-            attributes: [{
-                key: 'position',
-                types: ['Position'],
-            }, {
-                key: 'width',
-                types: ['Number'],
-            }, {
-                key: 'height',
-                types: ['Number'],
-            }]
+            widget: {
+                key: 'object',
+                config: {
+                    attributes: [{
+                        key: 'position',
+                        types: ['Position'],
+                    }, {
+                        key: 'width',
+                        types: ['Number'],
+                    }, {
+                        key: 'height',
+                        types: ['Number'],
+                    }]
+                }
+            }
         })
         .registerType({
             key: 'Line',
-            widget: 'object',
-            attributes: [{
-                key: 'start',
-                types: ['Position'],
-            }, {
-                key: 'stop',
-                types: ['Position'],
-            }]
+            widget: {
+                key: 'object',
+                config: {
+                    attributes: [{
+                        key: 'start',
+                        types: ['Position'],
+                    }, {
+                        key: 'stop',
+                        types: ['Position'],
+                    }]
+                }
+            }
         })
         .registerType({
             key: 'Position',
-            widget: 'object',
-            attributes: [{
-                key: 'x',
-                types: ['Number'],
-            }, {
-                key: 'y',
-                types: ['Number'],
-            }]
+            widget: {
+                key: 'object',
+                config: {
+                    attributes: [{
+                        key: 'x',
+                        types: ['Number'],
+                    }, {
+                        key: 'y',
+                        types: ['Number'],
+                    }]
+                }
+            }
         })
         .registerType({
             key: 'Number',
             widget: 'text',
         });
-
-    $scope.config = {
-        widget: {
-            template: function(scope) {
-                var widget = widgets['null'];
-                var typeKey = null;
-                var typeDef = null;
-                if (angular.isObject(scope.value)) {
-                    typeKey = scope.value.type;
-                    typeDef = types[typeKey];
-                    widget = widgets[typeDef.widget];
-                }
-
-                if (widget.extendConfig) {
-                    scope.subConfig = Object.create($scope.config);
-                    widget.extendConfig(scope.subConfig, typeKey, typeDef);
-                }
-                return widget.template;
-            }
-        },
-        createElement: function(type) {
-            return {type: type};
-        },
-    };
 
 })
 

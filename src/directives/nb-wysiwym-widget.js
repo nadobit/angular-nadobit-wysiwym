@@ -1,4 +1,4 @@
-module.exports = /*@ngInject*/ function($compile) {
+module.exports = /*@ngInject*/ function($compile, nbWysiwymRegistry) {
     return {
         restrict: 'E',
         require: 'ngModel',
@@ -7,22 +7,24 @@ module.exports = /*@ngInject*/ function($compile) {
         },
         link: function(scope, element, attrs, model) {
 
-            scope.$watch('value.value', function() {
-                model.$setViewValue(scope.value);
-            });
+            console.log(nbWysiwymRegistry);
 
-            if (angular.isString(scope.config.template)) {
-                element.html(scope.config.template);
-                $compile(element.contents())(scope);
-            }
+            // scope.$watch('value.value', function() {
+            //     model.$setViewValue(scope.value);
+            // });
 
-            model.$render = function() {
-                scope.value = model.$viewValue;
-                if (angular.isFunction(scope.config.template)) {
-                    element.html(scope.config.template(scope));
-                    $compile(element.contents())(scope);
-                }
-            };
+            // if (angular.isString(scope.config.template)) {
+            //     element.html(scope.config.template);
+            //     $compile(element.contents())(scope);
+            // }
+
+            // model.$render = function() {
+            //     scope.value = model.$viewValue;
+            //     if (angular.isFunction(scope.config.template)) {
+            //         element.html(scope.config.template(scope));
+            //         $compile(element.contents())(scope);
+            //     }
+            // };
         }
     }
 };
